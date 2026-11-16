@@ -1,7 +1,7 @@
 import re
 from typing import Literal
 
-from pydantic import BaseModel, HttpUrl, TypeAdapter, ValidationError, field_validator
+from pydantic import BaseModel, Field, HttpUrl, TypeAdapter, ValidationError, field_validator
 
 URL_RE = re.compile(r"https?://\S+")
 _url = TypeAdapter(HttpUrl)
@@ -12,7 +12,9 @@ def find_links(text: str) -> list[str]:
 
 
 class PostRequest(BaseModel):
-    message: str
+    message: str = Field(examples=[
+        "Check out our latest business platform and grow your online visibility. https://example.com"
+    ])
 
     @field_validator("message")
     @classmethod
