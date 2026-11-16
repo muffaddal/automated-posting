@@ -1,13 +1,10 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+
+from app.schemas import PostingResponse, PostRequest
 
 app = FastAPI(title="Automated Posting")
 
 
-class PostRequest(BaseModel):
-    message: str
-
-
-@app.post("/posting")
+@app.post("/posting", response_model=PostingResponse)
 async def posting(body: PostRequest):
-    return {"success": True, "results": [], "message": body.message}
+    return PostingResponse(success=True, results=[])
