@@ -5,9 +5,10 @@ import httpx
 
 from app.config import settings
 from app.platforms.base import Platform
+from app.platforms.telegram import Telegram
 from app.schemas import PostResult
 
-PLATFORMS: list[Platform] = []
+PLATFORMS: list[Platform] = [Telegram()]
 
 
 def describe_error(e: Exception) -> str:
