@@ -7,12 +7,13 @@ from app.config import settings
 from app.platforms.base import Platform
 from app.platforms.bluesky import Bluesky
 from app.platforms.devto import DevTo
+from app.platforms.discord import Discord
 from app.platforms.github_gist import GitHubGist
 from app.platforms.mastodon import Mastodon
 from app.platforms.telegram import Telegram
 from app.schemas import PostResult
 
-PLATFORMS: list[Platform] = [Telegram(), Mastodon(), Bluesky(), GitHubGist(), DevTo()]
+PLATFORMS: list[Platform] = [Telegram(), Mastodon(), Bluesky(), GitHubGist(), DevTo(), Discord()]
 
 
 def describe_error(e: Exception) -> str:
