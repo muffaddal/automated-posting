@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from datetime import datetime, timezone
 
 import httpx
@@ -12,6 +13,8 @@ from app.platforms.github_gist import GitHubGist
 from app.platforms.mastodon import Mastodon
 from app.platforms.telegram import Telegram
 from app.schemas import PostResult
+
+log = logging.getLogger("posting")
 
 PLATFORMS: list[Platform] = [Telegram(), Mastodon(), Bluesky(), GitHubGist(), DevTo(), Discord()]
 
@@ -28,12 +31,15 @@ def describe_error(e: Exception) -> str:
 
 async def run_one(platform: Platform, client: httpx.AsyncClient, message: str, link: str) -> PostResult:
     if not platform.is_configured():
+        log.warning("%s skipped: missing credentials", platform.name)
         return PostResult(platform=platform.name, status="failed", error="missing credentials")
     try:
         url = await platform.publish(client, message, link)
     except Exception as e:
+        log.warning("%s failed: %s", platform.name, describe_error(e))
         return PostResult(platform=platform.name, status="failed", error=describe_error(e))
 
+    log.info("%s posted: %s", platform.name, url)
     now = datetime.now(timezone.utc)
     return PostResult(
         platform=platform.name,
