@@ -5,11 +5,12 @@ import httpx
 
 from app.config import settings
 from app.platforms.base import Platform
+from app.platforms.bluesky import Bluesky
 from app.platforms.mastodon import Mastodon
 from app.platforms.telegram import Telegram
 from app.schemas import PostResult
 
-PLATFORMS: list[Platform] = [Telegram(), Mastodon()]
+PLATFORMS: list[Platform] = [Telegram(), Mastodon(), Bluesky()]
 
 
 def describe_error(e: Exception) -> str:
